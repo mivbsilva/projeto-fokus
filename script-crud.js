@@ -18,6 +18,11 @@ const taskIconSvg = `
 </svg>
 `
 
+const limparForm = () => {
+    textArea.value = '';
+    formTask.classList.add('hidden');
+}
+
 function createTask(tarefa){
     const li = document.createElement('li');
     li.classList.add('app__section-task-list-item');
@@ -41,6 +46,12 @@ tarefas.forEach(task => {
     taskListContainer.appendChild(taskItem);
 });
 
+cancelFormTaskBtn.addEventListener('click', () => {
+    formTask.classList.add('hidden');
+});
+
+btnCancelar.addEventListener('click', limparForm);
+
 toggleFormTaskBtn.addEventListener('click', () => {
     formLabel.textContent = 'Adicionando tarefa';
     formTask.classList.toggle('hidden');
@@ -55,8 +66,6 @@ formTask.addEventListener('submit', (evento) => {
     tarefas.push(task);
     const taskItem = createTask(task);
     taskListContainer.appendChild(taskItem);
-});
 
-cancelFormTaskBtn.addEventListener('click', () => {
-    formTask.classList.add('hidden')
+    limparForm();
 });
