@@ -5,8 +5,9 @@ const formLabel = document.querySelector('.app__form-label');
 const textArea = document.querySelector('.app__form-textarea');
 const cancelFormTaskBtn = document.querySelector('.app__form-footer__button--cancel');
 const btnCancelar = document.querySelector('.app__form-footer__button--cancel');
+const localStorageTarefas = localStorage.getItem('tarefas');
 
-let tarefas = [];
+let tarefas = localStorageTarefas ? JSON.parse(localStorageTarefas) : [];
 
 const taskIconSvg = `
 <svg class="app__section-task-icon-status" width="24" height="24" viewBox="0 0 24 24"
@@ -21,7 +22,7 @@ const taskIconSvg = `
 const limparForm = () => {
     textArea.value = '';
     formTask.classList.add('hidden');
-}
+};
 
 function createTask(tarefa){
     const li = document.createElement('li');
@@ -57,6 +58,10 @@ toggleFormTaskBtn.addEventListener('click', () => {
     formTask.classList.toggle('hidden');
 });
 
+const uptadeLocalStorage = () => {
+    localStorage.setItem('tarefas', JSON.stringify(tarefas));
+};
+
 formTask.addEventListener('submit', (evento) => {
     evento.preventDefault();
     const task = {
@@ -67,5 +72,9 @@ formTask.addEventListener('submit', (evento) => {
     const taskItem = createTask(task);
     taskListContainer.appendChild(taskItem);
 
+    uptadeLocalStorage();
     limparForm();
 });
+
+localStorage.setItem('quantidade', 10);
+console.log(localStorage.getItem('quantidade'));
