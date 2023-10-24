@@ -51,12 +51,23 @@ const selecionaTarefa = (tarefa, elemento) => {
 };
 
 const limparForm = () => {
+    tarefaEmEdicao = null;
+    paragraphEmEdicao = null;
     textArea.value = '';
     formTask.classList.add('hidden');
 };
 
-const selecionaTarefaParaEditar = () => {
+const selecionaTarefaParaEditar = (tarefa, elemento) => {
+    if(tarefaEmEdicao == tarefa){
+        limparForm();
+        return;
+    }
 
+    formLabel.textContent = 'Editando tarefa';
+    tarefaEmEdicao = tarefa;
+    paragraphEmEdicao = elemento;
+    textArea.value = tarefa.descricao;
+    formTask.classList.remove('hidden');
 }
 
 function createTask(tarefa){
@@ -79,6 +90,10 @@ function createTask(tarefa){
 
     button.appendChild(editIcon);
 
+    button.addEventListener('click', event => {
+        event.stopPropagation();
+        selecionaTarefaParaEditar(tarefa, paragraph);
+    })
 
     li.onclick = () => {
         selecionaTarefa(tarefa, li);
@@ -124,6 +139,10 @@ const uptadeLocalStorage = () => {
 
 formTask.addEventListener('submit', (evento) => {
     evento.preventDefault();
+    if(tarefaEmEdicao){
+        tarefaEmEdicao.descricao = textArea.value;
+        paragraphEmEdicao.textContent = textArea.value;
+    }else{    
     const task = {
         descricao: textArea.value,
         concluida: false
@@ -131,7 +150,7 @@ formTask.addEventListener('submit', (evento) => {
     tarefas.push(task);
     const taskItem = createTask(task);
     taskListContainer.appendChild(taskItem);
-
+    }
     uptadeLocalStorage();
     limparForm();
 });
