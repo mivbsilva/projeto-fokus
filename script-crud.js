@@ -1,13 +1,18 @@
 const taskListContainer = document.querySelector('.app__section-task-list');
+
 const formTask = document.querySelector('.app__form-add-task');
 const toggleFormTaskBtn = document.querySelector('.app__button--add-task');
 const formLabel = document.querySelector('.app__form-label');
-const textArea = document.querySelector('.app__form-textarea');
+
 const cancelFormTaskBtn = document.querySelector('.app__form-footer__button--cancel');
-const btnCancelar = document.querySelector('.app__form-footer__button--cancel');
-const localStorageTarefas = localStorage.getItem('tarefas');
+
 const taskActiveDescription = document.querySelector('.app__section-active-task-description');
 
+const textArea = document.querySelector('.app__form-textarea');
+
+const btnCancelar = document.querySelector('.app__form-footer__button--cancel');
+
+const localStorageTarefas = localStorage.getItem('tarefas');
 let tarefas = localStorageTarefas ? JSON.parse(localStorageTarefas) : [];
 
 const taskIconSvg = `
@@ -22,6 +27,10 @@ const taskIconSvg = `
 
 let tarefaSelecionada = null;
 let itemTarefaSelecionada = null;
+
+let tarefaEmEdicao = null;
+let paragraphEmEdicao = null;
+
 const selecionaTarefa = (tarefa, elemento) => {
 
     document.querySelectorAll('.app__section-task-list-item-active').forEach(function (button){
@@ -46,6 +55,10 @@ const limparForm = () => {
     formTask.classList.add('hidden');
 };
 
+const selecionaTarefaParaEditar = () => {
+
+}
+
 function createTask(tarefa){
     const li = document.createElement('li');
     li.classList.add('app__section-task-list-item');
@@ -59,6 +72,13 @@ function createTask(tarefa){
     paragraph.textContent = tarefa.descricao;
 
     const button = document.createElement('button');
+
+    button.classList.add('app_button-edit');
+    const editIcon = document.createElement('img');
+    editIcon.setAttribute('src', '/imagens/edit.png');
+
+    button.appendChild(editIcon);
+
 
     li.onclick = () => {
         selecionaTarefa(tarefa, li);
@@ -77,6 +97,7 @@ function createTask(tarefa){
 
     li.appendChild(svgIcon);
     li.appendChild(paragraph);
+    li.appendChild(button);
 
     return li;
 };
@@ -114,6 +135,3 @@ formTask.addEventListener('submit', (evento) => {
     uptadeLocalStorage();
     limparForm();
 });
-
-localStorage.setItem('quantidade', 10);
-console.log(localStorage.getItem('quantidade'));
